@@ -13,7 +13,7 @@ This data is the US census data from 2017 showing current breakdown of Veteran P
 library(readxl)
 VetOver <- read_excel("Data.xlsx", sheet = "Sheet1", 
     range = "B4:C26")
-
+VetOver
 ```
 
 

@@ -1,0 +1,19 @@
+---
+title: "Veteran Population Data for the 41st Congression District"
+output: 
+  html_notebook:
+    toc: true
+---
+
+# Veteran Overview
+
+This data is the US census data from 2017 showing current breakdown of Veteran Population in Riverside County
+
+```{r}
+library(readxl)
+VetOver <- read_excel("Data.xlsx", sheet = "Sheet1", 
+    range = "B4:C26")
+
+```
+
+

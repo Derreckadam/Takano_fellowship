@@ -1,19 +1,46 @@
 ---
 title: "Veteran Population Data for the 41st Congression District"
 output: 
-  html_notebook:
+  pdf_document:
     toc: true
 ---
 
 # Veteran Overview
 
-This data is the US census data from 2017 showing current breakdown of Veteran Population in Riverside County
+This data is the US census data from 2017 showing current breakdown of Veteran Population in Riverside County.
 
-```{r}
+Students here for UCR for veterans
+
+Major bus route, 91, 215.
+
+Hard to get from temecula to Loma linda. 
+
+```{r echo=FALSE}
 library(readxl)
-VetOver <- read_excel("Data.xlsx", sheet = "Sheet1", 
-    range = "B4:C26")
-VetOver
+library(kableExtra)
+library(ggplot2)
+VetOver <- read_excel("Data.xlsx", sheet = "Vet_census", 
+    range = "A1:B6")
+VetOver <- as.data.frame(VetOver)
+
+VetOver %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+colnames(VetOver) <- c("Catagory", "Number")
+
+ggplot(data=VetOver, aes(x=VetOver$Catagory, y=VetOver$Number, fill=Catagory)) + geom_bar(stat="identity") + theme(legend.position = "none", axis.text.x = element_text(angle = 90)) + ylab("Number of Veterans") + xlab("")
+
+
 ```
 
+A trend that it may be increasing. Show a figure of vet population over time. 
 
+
+```{r echo=FALSE}
+library(readxl)
+library(kableExtra)
+library(ggplot2)
+
+Data <- read_excel("Data.xlsx", sheet = "VA_waittimes")
+```

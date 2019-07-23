@@ -42,5 +42,33 @@ library(readxl)
 library(kableExtra)
 library(ggplot2)
 
-Data <- read_excel("Data.xlsx", sheet = "VA_waittimes")
+Wait <- read_excel("Data.xlsx", sheet = "VA_waittimes")
+Wait <- as.data.frame(Wait[,3:18])
+Wait%>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+ggplot(data=Wait, aes(x=Wait$Location, y=Wait$`PC Avg Wait Time in Days 13`, fill=Wait$Location)) + geom_bar(stat="identity") + theme(legend.position = "none", axis.text.x = element_text(angle = 90)) + ylab("Primary Care Wait time") + xlab("")
+
 ```
+History - Jerry Louis 
+
+Capacity -  VA health care locations compared to demographics, kinds of care/specialties
+  outpaitent services
+  number of patients
+  Mental Health
+  Community based clinics are based on Health Centers
+  Trajectory of capacity
+  Ecancer
+  telemedicine
+
+Accessiblity - Waittimes, transportation/drive times, San bernadino,
+
+Quality - Complaint data, Ratings, Long beach data from Gerry, Takano may be able to get data for 
+  $600 per patient, cost of patient is actualy \$200
+
+Learn more about Arcadia location that just opened- Nepalitono, june, shift, their case for clinic - provides access to those without a car. 
+
+Ideal outcome: Winning contract for 5 CBOCs, over building one here. RFP
+Hybrid, community owned, Va owned. CBOCs are lucrative
+

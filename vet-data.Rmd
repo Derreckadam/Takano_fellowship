@@ -5,11 +5,18 @@ output:
     toc: true
 ---
 
+```{r}
+#install.packages("readxl")
+#install.packages("kableExtra")
+#install.packages("ggplot2")
+tinytex::install_tinytex()
+```
 # Veteran Overview
-In general this doucment with outlines the history of VA facilities in the area, Veteran Needs and demographics, as well as the Capacity, Quality, and Assesibility of nearby CBOCs and VA Medical Centers.
+In general this doucment with outlines the history of VA facilities in the area, Veteran Needs and demographics, as well as the Capacity, Quality, and Accesibility of nearby CBOCs and VA Medical Centers.
 
 
-# History - Jerry Louis 
+# History - 
+In the 1970's the current VA's were established around Riverside. Jerry Lewis, Rep for Redlands, was on the appropriations committee.
 
 # Veteran Population and Needs in Riverside County
 
@@ -33,7 +40,7 @@ ggplot(data=VetOver, aes(x=VetOver$Catagory, y=VetOver$Number, fill=Catagory)) +
 
 ```
 
-A trend that it may be increasing. Show a figure of vet population over time. 
+--A trend that it may be increasing. Show a figure of vet population over time. 
 
 # VA Capacity
 
@@ -76,7 +83,7 @@ This VA data focuses on quality rating of Medical Centers in California.
 library(readxl)
 library(ggplot2)
 library(reshape2)
-data <- read_excel("/Volumes/GoogleDrive/My Drive/Takano_fellowship/Data.xlsx", sheet = "LomaLinda_rating_va", range = "A1:W9")
+data <- read_excel("Data.xlsx", sheet = "LomaLinda_rating_va", range = "A1:W9")
 
 data.long <- melt(data, id = "Facility", measure = c("F1",	"F2",	"F3",	"F4",	"F5",	"F6",	"F7",	"F8",	"F9",	"F10",	"F11",	"F12",	"F13",	"F14",	"F15",	"F16",	"F17",	"F18",	"F19",	"F20",	"F21",	"F22"))
 
@@ -87,7 +94,21 @@ plot
 pdf("Loma_linda_Rating.pdf")
 plot
 dev.off()
-````
+```
+
+As a reference for these data points:
+
+```{r, echo=FALSE}
+Codes <- read_excel("Data.xlsx", sheet = "LomaLinda_rating_va", 
+    range = "C12:D34")
+Codes <- as.data.frame(Codes)
+
+Codes %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
 # VA Accessiblity 
 
 Waittimes, transportation/drive times, San bernadino,

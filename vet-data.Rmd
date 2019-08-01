@@ -9,7 +9,7 @@ output:
 #install.packages("readxl")
 #install.packages("kableExtra")
 #install.packages("ggplot2")
-tinytex::install_tinytex()
+#tinytex::install_tinytex()
 ```
 # Veteran Overview
 In general this doucment with outlines the history of VA facilities in the area, Veteran Needs and demographics, as well as the Capacity, Quality, and Accesibility of nearby CBOCs and VA Medical Centers.
@@ -33,13 +33,41 @@ VetOver %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
-colnames(VetOver) <- c("Catagory", "Number")
+colnames(VetOver) <- c("Category", "Number")
 
 ggplot(data=VetOver, aes(x=VetOver$Catagory, y=VetOver$Number, fill=Catagory)) + geom_bar(stat="identity") + theme(legend.position = "none", axis.text.x = element_text(angle = 90)) + ylab("Number of Veterans") + xlab("")
 
 
 ```
 
+
+```{r}
+library(readxl)
+library(kableExtra)
+library(ggplot2)
+library(reshape2)
+income <- read_excel("Data.xlsx", sheet = "B21007")
+income <- as.data.frame(income)
+
+income %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+income.m <- melt(income, id = c("Age", "Disability", "Location", "Percent Affected", "Error"))
+
+class(income.m$`Per Capita`)
+
+dodge=position_dodge(width=0)
+income.plot <- ggplot(income.m, aes(x=Location, y=income.m$`Percent Affected`, color=Disability, shape=Age)) +
+  geom_point(alpha=0.9, position=dodge) + ylab("Percent of District Affected") + coord_flip() #+ geom_errorbar(position=dodge, aes(ymin=Population-income.m$`Margin of Error`, ymax=Population+income.m$`Margin of Error`), width=.1)
+  
+income.plot
+
+pdf("Income.pdf", height = 8, width=12)
+  income.plot
+dev.off()
+
+```
 --A trend that it may be increasing. Show a figure of vet population over time. 
 
 # VA Capacity

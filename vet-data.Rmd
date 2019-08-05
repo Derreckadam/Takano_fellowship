@@ -35,7 +35,7 @@ VetOver %>%
 
 colnames(VetOver) <- c("Category", "Number")
 
-ggplot(data=VetOver, aes(x=VetOver$Catagory, y=VetOver$Number, fill=Catagory)) + geom_bar(stat="identity") + theme(legend.position = "none", axis.text.x = element_text(angle = 90)) + ylab("Number of Veterans") + xlab("")
+ggplot(data=VetOver, aes(x=VetOver$Category, y=VetOver$Number, fill=Category)) + geom_bar(stat="identity") + theme(legend.position = "none", axis.text.x = element_text(angle = 90)) + ylab("Number of Veterans") + xlab("")
 
 
 ```

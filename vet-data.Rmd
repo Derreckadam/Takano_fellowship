@@ -9,6 +9,8 @@ output:
 #install.packages("readxl")
 #install.packages("kableExtra")
 #install.packages("ggplot2")
+#install.packages("sp")
+#install.packages("gghighlight")
 #tinytex::install_tinytex()
 ```
 # Veteran Overview
@@ -21,6 +23,11 @@ In the 1970's the current VA's were established around Riverside. Jerry Lewis, R
 # Veteran Population and Needs in Riverside County
 
 This data is the US census data from 2017 showing current breakdown of Veteran Population in Riverside County. We have a total of 140,000 veterans making up about 8% of the population. 
+
+```{r pressure, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
+knitr::include_graphics("vet_map.png")
+```
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
 library(kableExtra)
@@ -46,6 +53,9 @@ library(readxl)
 library(kableExtra)
 library(ggplot2)
 library(reshape2)
+library(sp)
+library(gghighlight)
+
 income <- read_excel("Data.xlsx", sheet = "B21007")
 income <- as.data.frame(income)
 
@@ -58,13 +68,44 @@ income.m <- melt(income, id = c("Age", "Disability", "Location", "Percent Affect
 class(income.m$`Per Capita`)
 
 dodge=position_dodge(width=0)
-income.plot <- ggplot(income.m, aes(x=Location, y=income.m$`Percent Affected`, color=Disability, shape=Age)) +
-  geom_point(alpha=0.9, position=dodge) + ylab("Percent of District Affected") + coord_flip() #+ geom_errorbar(position=dodge, aes(ymin=Population-income.m$`Margin of Error`, ymax=Population+income.m$`Margin of Error`), width=.1)
+p1 <- ggplot(income.m, aes(x=Location, y=income.m$`Percent Affected`, color=Age, shape=Disability)) +
+  geom_point(alpha=0.9, position=dodge) + ylab("Percent of District Affected") + coord_flip()  + ggtitle("All Data")  #+ geom_errorbar(position=dodge, aes(ymin=Population-income.m$`Margin of Error`, ymax=Population+income.m$`Margin of Error`), width=.1)
   
-income.plot
 
-pdf("Income.pdf", height = 8, width=12)
-  income.plot
+
+# subset data and create new object based on column query
+
+str(income.m$Disability)
+income.dis <- income.m[income.m$Disability == "With a disability" ,]
+
+p2 <- ggplot(income.dis, aes(x=Location, y=income.dis$`Percent Affected`, color=Age)) +
+  geom_point(alpha=0.9, position=dodge) + ylab("Percent of District Affected") + coord_flip() + ggtitle("Disabled Veterans Below Poverty Line")
+
+
+str(income.m$Age)
+income.old <- income.m[income.m$Age == "65+ years" ,]
+
+p3 <- ggplot(income.old, aes(x=Location, y=income.old$`Percent Affected`)) +
+  geom_bar(stat= "identity", fill="mediumorchid1") + ylab("Percent of District Affected") + coord_flip() + ggtitle("Senior Veterans Below Poverty Line")
+
+str(income.m$Location)
+income.here <- income.m[income.m$Location == "Congressional District 41" ,]
+
+p4 <- ggplot(income.here, aes(x=Age, y=income.here$`Percent Affected`, fill=Disability)) +
+  geom_bar(stat="identity") + ylab("Percent of District Affected")  + ggtitle("District 41") 
+
+p1
+p2
+p3
+p4
+
+pdf("demos.pdf")
+# set plot so it is 2x2 in one plot canvas
+par(mfrow=c(2,2)) 
+p1
+p2
+p3
+p4
 dev.off()
 
 ```

@@ -27,6 +27,9 @@ This data is the US census data from 2017 showing current breakdown of Veteran P
 ```{r pressure, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
 knitr::include_graphics("vet_map.png")
 ```
+```{r, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
+knitr::include_graphics("legend.png")
+```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
@@ -46,7 +49,27 @@ ggplot(data=VetOver, aes(x=VetOver$Category, y=VetOver$Number, fill=Category)) +
 
 
 ```
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(kableExtra)
+library(ggplot2)
+library(reshape2)
+library(sp)
+library(gghighlight)
 
+income <- read_excel("Data.xlsx", sheet = "B21007")
+income <- as.data.frame(income)
+
+table = income %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+table
+```
 
 ```{r}
 library(readxl)
@@ -59,13 +82,8 @@ library(gghighlight)
 income <- read_excel("Data.xlsx", sheet = "B21007")
 income <- as.data.frame(income)
 
-income %>%
-  kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover"))
-
 income.m <- melt(income, id = c("Age", "Disability", "Location", "Percent Affected", "Error"))
 
-class(income.m$`Per Capita`)
 
 dodge=position_dodge(width=0)
 p1 <- ggplot(income.m, aes(x=Location, y=income.m$`Percent Affected`, color=Age, shape=Disability)) +

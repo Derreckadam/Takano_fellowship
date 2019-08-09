@@ -27,6 +27,21 @@ This data is the US census data from 2017 showing current breakdown of Veteran P
 ```{r pressure, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
 knitr::include_graphics("vet_map.png")
 ```
+
+
+```{r echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
+knitr::include_graphics("drive time.png")
+```
+```{r echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
+knitr::include_graphics("vet_map.png")
+```
+```{r echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
+knitr::include_graphics("Poverty_vet.png")
+```
+```{r echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
+knitr::include_graphics("vet_map.png")
+```
+
 ```{r, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%'}
 knitr::include_graphics("legend.png")
 ```

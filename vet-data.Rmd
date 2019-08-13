@@ -92,8 +92,7 @@ p4 <- ggplot(income.here, aes(x=Age, y=income.here$`Population`, fill=Disability
 
 #p1
 #p2
-p3
-p4
+
 
 pdf("demos.pdf")
 # set plot so it is 2x2 in one plot canvas
@@ -105,10 +104,10 @@ p4
 dev.off()
 
 ```
-```{r figs, echo=FALSE, fig.width=4,fig.height=4,fig.cap="This figure shows senior veterans (65+ years old) living below the poverty line in California Congressional Districts"}
+```{r echo=FALSE, fig.width=4,fig.height=4,fig.cap="This figure shows senior veterans (65+ years old) living below the poverty line in California Congressional Districts"}
 p3
 ```
-```{r figs, echo=FALSE, fig.width=4,fig.height=4,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
+```{r echo=FALSE, fig.width=4,fig.height=4,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
 p4
 ```
 
@@ -118,7 +117,7 @@ knitr::include_graphics("Veteran Population.png")
 
 #change district border and Clinic Color
 ```
-```{r pressure, echo=FALSE, out.width = '100%', fig.cap="B.) Blobs dot denoting locations within reach of VA Clinics"}
+```{r echo=FALSE, out.width = '100%', fig.cap="B.) Blobs dot denoting locations within reach of VA Clinics"}
 knitr::include_graphics("Veteran Clinics.png")
 
 #change district border and Clinic Color

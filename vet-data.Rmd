@@ -123,6 +123,14 @@ knitr::include_graphics("Veteran Clinics.png")
 #change district border and Clinic Color
 ```
 
+## Southern California
+
+```{r echo=FALSE, out.width = '100%', fig.cap="Southern California has  a high population of Veterans"}
+knitr::include_graphics("Counties.png")
+
+#change district border and Clinic Color
+```
+
 ## Mental Health in Riverside CA
   I'd like to include some data on veteran mental health health here. it would demonstrate the need for a loca facility but also help define what might be key roles for a new clinic. 
 

@@ -5,7 +5,7 @@ output:
     toc: true
 ---
 
-```{r}
+```{r echo=FALSE}
 #install.packages("readxl")
 #install.packages("kableExtra")
 #install.packages("ggplot2")
@@ -49,7 +49,7 @@ VetPop.plot <- ggplot(data=VetOver, aes(x=VetOver$Year, y=VetOver$Population, fi
 VetPop.plot
 ```
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
 library(kableExtra)
 library(ggplot2)
@@ -71,8 +71,8 @@ dodge=position_dodge(width=0)
 
 # subset data and create new object based on column query
 
-str(income.m$Disability)
-income.dis <- income.m[income.m$Disability == "With a disability" ,]
+#str(income.m$Disability)
+#income.dis <- income.m[income.m$Disability == "With a disability" ,]
 
 #p2 <- ggplot(income.dis, aes(x=Location, y=income.dis$`Percent Affected`, color=Age)) +
  # geom_point(alpha=0.9, position=dodge) + ylab("Percent of District Affected") + coord_flip() + ggtitle("Disabled Veterans Below Poverty Line")
@@ -200,8 +200,11 @@ Wait <- as.data.frame(Wait[,3:18])
   #kable() %>%
   #kable_styling(bootstrap_options = c("striped", "hover"))
 
-ggplot(data=Wait, aes(x=Wait$Location, y=Wait$`PC Avg Wait Time in Days 13`, fill=Wait$Location)) + geom_bar(stat="identity") + theme(legend.position = "none", axis.text.x = element_text(angle = 90)) + ylab("Primary Care Wait time (days)") + xlab("")
+p5 <- ggplot(data=Wait, aes(x=Wait$Location, y=Wait$`PC Avg Wait Time in Days 13`, fill=Wait$Location)) + geom_bar(stat="identity") + theme(legend.position = "none", axis.text.x = element_text(angle = 90)) + ylab("Primary Care Wait time (days)") + xlab("")
 
+```
+```{r echo=FALSE, fig.width=4,fig.height=4,fig.cap="Average wait times at clinics around California"}
+p5
 ```
 
 
@@ -213,22 +216,23 @@ data <- read_excel("Data.xlsx", sheet = "VA sqft v Patients", range = "A1:C6")
 
 data.long <- melt(data, id = c("Location", "Patients", "Space"))
 
-data.long
-plot <- ggplot(data.long, aes(Location, Patients, fill=Space)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90))
+p6 <- ggplot(data.long, aes(Location, Patients, fill=Space)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90))
 
-
-plot
 
 pdf("Loma_linda_Rating.pdf")
-plot
+p6
 dev.off()
 
 #Include age over time of each of these facilites. 
 ```
+```{r echo=FALSE, fig.width=4,fig.height=4,fig.cap="Loma Linda facilities capacity/size"}
+p6
+```
+
 
 This VA data focuses on quality rating of Medical Centers in California. 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
 library(ggplot2)
 library(reshape2)
@@ -236,18 +240,21 @@ data <- read_excel("Data.xlsx", sheet = "LomaLinda_rating_va", range = "A1:W9")
 
 data.long <- melt(data, id = "Facility", measure = c("F1",	"F2",	"F3",	"F4",	"F5",	"F6",	"F7",	"F8",	"F9",	"F10",	"F11",	"F12",	"F13",	"F14",	"F15",	"F16",	"F17",	"F18",	"F19",	"F20",	"F21",	"F22"))
 
-plot <- ggplot(data.long, aes(Facility, value, color=variable)) + geom_point(stat='identity') + theme(axis.text.x = element_text(angle = 90))
+p7 <- ggplot(data.long, aes(Facility, value, color=variable)) + geom_point(stat='identity') + theme(axis.text.x = element_text(angle = 90))
 
-plot
+
 
 pdf("Loma_linda_Rating.pdf")
-plot
+p7
 dev.off()
+```
+```{r echo=FALSE, fig.width=4,fig.height=4,fig.cap="Rating for various medical codes for Loma Linda medical center"}
+p7
 ```
 
 As a reference for these data points:
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 Codes <- read_excel("Data.xlsx", sheet = "LomaLinda_rating_va", 
     range = "C12:D34")
 Codes <- as.data.frame(Codes)

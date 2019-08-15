@@ -16,13 +16,39 @@ output:
 # Veteran Overview
 In general this doucment with outlines the history of VA facilities in the area, Veteran Needs and demographics, as well as the Capacity, Quality, and Accesibility of nearby CBOCs and VA Medical Centers.
 
+Dispite having a high population of veterans California does not have A.) High Quality VA Clinics B.) Or Clinics that are accessible by much of the population
+ (See figures below)
+
+```{r pressure, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '50%', fig.cap="A.) This figure shows veterans populations in california are the highest"}
+knitr::include_graphics("Veteran Population.png")
+
+#change district border and Clinic Color
+```
+
+```{r echo=FALSE, out.width = '50%', fig.cap="B.) Blobs dot denoting locations within reach of VA Clinics show that there is a lack of clinics in high population areas like california"}
+
+knitr::include_graphics("Veteran Clinics.png")
+
+#change district border and Clinic Color
+```
+
+## Southern California
+
+Much of the population of veterans resides farther east than where clinics are located
+
+```{r echo=FALSE, out.width = '100%', fig.cap="Southern California has  a high population of Veterans"}
+knitr::include_graphics("Counties.png")
+
+#change district border and Clinic Color
+```
 
 # History - 
-In the 1970's the current VA's were established around Riverside. Jerry Lewis, Rep for Redlands, was on the appropriations committee. Which is probably how 5 locations were awarded to Loma Linda to oversee. 
+In the 1970's the current VA's were established around Riverside. Jerry Lewis, Rep for Redlands, was on the appropriations committee. Now as desert community populations are growing there is a need for clinics further east.
+
 
 # Veteran Population and Needs in Riverside County
 
-This data is the US census data from 2015 to 2017 showing current breakdown of Veteran Population in Riverside County. We have a total of 140,000 veterans making up about 8% of the population. 
+This data is the US census data from 2015 to 2017 showing current breakdown of Veteran Population in Riverside County. We have a total of 140,000 veterans making up about 8% of the population. Curretnly there is no VA clinic in Riverside and the nearest one in Corona is about a two hour bus ride.
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -39,12 +65,13 @@ VetOver %>%
 
 colnames(VetOver) <- c("Gender", "Year", "Population", "SE")
 
-VetPop.plot <- ggplot(data=VetOver, aes(x=VetOver$Year, y=VetOver$Population, fill=Gender)) + theme(axis.text.x = element_text(angle = 90)) + ylab("Number of Veterans") + xlab("") + geom_bar(stat="identity") + labs(title="Riverside County Veteran Population") + geom_errorbar(aes(ymin=Population-SE, ymax=Population+SE), width=.1) +ylim(0, 150000)
+VetPop.plot <- ggplot(data=VetOver, aes(x=VetOver$Year, y=VetOver$Population, fill=Gender)) + ylab("Number of Veterans") + xlab("") + geom_bar(stat="identity") + labs(title="Riverside County Veteran Population") + geom_errorbar(aes(ymin=Population-SE, ymax=Population+SE), width=.1) +ylim(0, 150000)
 
 
 #Increasing homeless counts
 
 ```
+
 ```{r figs, echo=FALSE, fig.width=4,fig.height=4,fig.cap="this figure shows the population of Veterans in Riverside county over the course of three years, although we see a decrease year after years, homeless veteran populations are increasing"}
 VetPop.plot
 ```
@@ -84,11 +111,10 @@ income.old <- income.m[income.m$Age == "65+ years" ,]
 p3 <- ggplot(income.old, aes(x=Location, y=income.old$`Population`)) +
   geom_bar(stat= "identity", fill="mediumorchid1") + ylab("Individuals") + coord_flip() + ggtitle("Senior Veterans Below Poverty Line")
 
-str(income.m$Location)
-income.here <- income.m[income.m$Location == "Congressional District 41" ,]
+#str(income.m$Location)
+#income.here <- income.m[income.m$Location == "Congressional District 41" ,]
 
-p4 <- ggplot(income.here, aes(x=Age, y=income.here$`Population`, fill=Disability)) +
-  geom_bar(stat="identity") + ylab("Individuals")  + ggtitle("District 41") 
+#p4 <- ggplot(income.here, aes(x=Age, y=income.here$`Population`, fill=Disability)) + geom_bar(stat="identity") + ylab("Individuals")  + ggtitle("District 41") 
 
 #p1
 #p2
@@ -100,36 +126,39 @@ par(mfrow=c(1,1))
 #p1
 #p2
 p3
-p4
 dev.off()
 
 ```
+
+Of the 140,000 Veterans in Riverside county thousands live below the poverty line (See districts 42 and 41). Meaning they may rely on public transporation to get them to VA clinics. 
+
 ```{r echo=FALSE, fig.width=4,fig.height=4,fig.cap="This figure shows senior veterans (65+ years old) living below the poverty line in California Congressional Districts"}
 p3
 ```
-```{r echo=FALSE, fig.width=4,fig.height=4,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
+
+Here is a specific break down of veterans with disablities that might inhibit them from being able to drive a car. 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(ggplot2)
+library(reshape2)
+
+dis <- read_excel("Data.xlsx", sheet = "B21100", range = "A1:M3")
+dis.df <- as.data.frame(dis)
+
+dis.m <- melt(dis.df, id = c("Geography"))
+
+p4 <- ggplot(dis.m, aes(x=Geography, y=value, fill=variable)) +
+  geom_bar(stat="identity", position = position_dodge()) + ylab("Individuals")  + ggtitle("Disablable Veteran Population in Southern California") + theme(axis.text.x = element_text(angle = 90))
+
+
+
+```
+
+```{r echo=FALSE, fig.width=8,fig.height=6,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
 p4
 ```
 
-
-```{r pressure, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '100%', fig.cap="A.) This figure shows veterans populations in each state"}
-knitr::include_graphics("Veteran Population.png")
-
-#change district border and Clinic Color
-```
-```{r echo=FALSE, out.width = '100%', fig.cap="B.) Blobs dot denoting locations within reach of VA Clinics"}
-knitr::include_graphics("Veteran Clinics.png")
-
-#change district border and Clinic Color
-```
-
-## Southern California
-
-```{r echo=FALSE, out.width = '100%', fig.cap="Southern California has  a high population of Veterans"}
-knitr::include_graphics("Counties.png")
-
-#change district border and Clinic Color
-```
 
 ## Mental Health in Riverside CA
   I'd like to include some data on veteran mental health health here. it would demonstrate the need for a loca facility but also help define what might be key roles for a new clinic. 

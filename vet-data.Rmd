@@ -143,22 +143,24 @@ library(readxl)
 library(ggplot2)
 library(reshape2)
 
-dis <- read_excel("Data.xlsx", sheet = "B21100", range = "A1:M3")
+dis <- read_excel("Data.xlsx", sheet = "B21100", range = "A1:E7")
 dis.df <- as.data.frame(dis)
 
-dis.m <- melt(dis.df, id = c("Geography"))
+dis.m <- melt(dis.df, id = c("Service-connected Disability Rating", 'Riverside County',	'Riverside SE',	'District 41',	'District 41 SE'))
 
-p4 <- ggplot(dis.m, aes(x=Geography, y=value, fill=variable)) +
-  geom_bar(stat="identity", position = position_dodge()) + ylab("Individuals")  + ggtitle("Disablable Veteran Population in Southern California") + theme(axis.text.x = element_text(angle = 90))
+p4a <- ggplot(dis.m, aes(x=dis.m$`Service-connected Disability Rating`, y= dis.m$`Riverside County`, fill=dis.m$`Service-connected Disability Rating`)) + geom_bar(stat="identity", position = position_dodge()) + ylab("Individuals")  + ggtitle("Disablable Veteran Population in Riverside County") + theme(axis.text.x = element_text(angle = 90, vjust=.2)) + geom_errorbar(aes(ymin=dis.m$`Riverside County`-dis.m$`Riverside SE`, ymax=dis.m$`Riverside County`+dis.m$`Riverside SE`), width=.2, position=position_dodge(.9))
 
+p4b <- ggplot(dis.m, aes(x=dis.m$`Service-connected Disability Rating`, y= dis.m$`District 41`, fill=dis.m$`Service-connected Disability Rating`)) + geom_bar(stat="identity", position = position_dodge()) + ylab("Individuals")  + ggtitle("Disablable Veteran Population in District 41") + theme(axis.text.x = element_text(angle = 90, vjust=.2)) + geom_errorbar(aes(ymin=dis.m$`District 41`-dis.m$`District 41 SE`, ymax=dis.m$`District 41`+dis.m$`District 41 SE`), width=.2, position=position_dodge(.9))
 
-
+```
+Riverside has nearly 100
+```{r echo=FALSE, fig.width=8,fig.height=6,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
+p4a
 ```
 
 ```{r echo=FALSE, fig.width=8,fig.height=6,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
-p4
+p4b
 ```
-
 
 ## Mental Health in Riverside CA
   I'd like to include some data on veteran mental health health here. it would demonstrate the need for a loca facility but also help define what might be key roles for a new clinic. 

@@ -1,5 +1,15 @@
 ---
-title: "Veteran Population Data for the 41st Congression District"
+title: "Report on Capacity, Quality, Accessibility of Veteran Affairs Clinics in Southern California"
+subtitlet: "For Office of Congressman Mark Takano"
+author:
+  name: Derreck Carter-House
+  affiliation: Science to Policy at the University of California, Riverside
+date: "`r format(Sys.time(), '%d %B %Y')`"
+tags: [nothing, nothingness]
+abstract: |
+  This report briefly describes Veterans and thier needs in Southern Californai and how they differe from the greater united states. To analyze these questions the report utilizes many sources of data from the US Census Buerea, Veteran Affairs data, map data, and transit data. 
+
+  In general this report finds that despite having the largest Veteran Population of any state it does not have A.) High Quality VA Clinics and Medical Centers and B.) Clinics that are accessilbe by much of the population. 
 output: 
   pdf_document:
     toc: true
@@ -13,11 +23,9 @@ output:
 #install.packages("gghighlight")
 #tinytex::install_tinytex()
 ```
-# Veteran Overview
-In general this doucment with outlines the history of VA facilities in the area, Veteran Needs and demographics, as well as the Capacity, Quality, and Accesibility of nearby CBOCs and VA Medical Centers.
+# Southern California Veteran Overview
 
-Dispite having a high population of veterans California does not have A.) High Quality VA Clinics B.) Or Clinics that are accessible by much of the population
- (See figures below)
+Much of Southern California is desert and as such has very dispersed veteran populations. In addition there are different branches due to other geographic features such as coastal access for the Navy, air force bases, training bases. Many people (approxamately 2.6 million in the last 10 years) are moving into California including veterans [Source: World population]
 
 ```{r pressure, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '50%', fig.cap="A.) This figure shows veterans populations in california are the highest"}
 knitr::include_graphics("Veteran Population.png")
@@ -32,9 +40,7 @@ knitr::include_graphics("Veteran Clinics.png")
 #change district border and Clinic Color
 ```
 
-## Southern California
 
-Much of the population of veterans resides farther east than where clinics are located
 
 ```{r echo=FALSE, out.width = '100%', fig.cap="Southern California has  a high population of Veterans"}
 knitr::include_graphics("Counties.png")
@@ -42,11 +48,16 @@ knitr::include_graphics("Counties.png")
 #change district border and Clinic Color
 ```
 
-# History - 
+# History
+
+In 1888 the LA West Campus was gifted to the Federal Government. It was under scruteny for corruption and mismangement with lead to the creation of the "Master Plan" [Everything You Need To Know About The Massive, Decaying West LA VA Campus — And The Plan To Fix It.] bringing in more housing for Veterans and reducing the Veteran Homeless Population in LA [LA’s Veteran Homelessness down 18 Percent]. The plan also revitalizes the medical facilities however cuts the PTSD clinic [The VA Wants to Move a PTSD Clinic. The Vets Are Fighting Back].
+
 In the 1970's the current VA's were established around Riverside. Jerry Lewis, Rep for Redlands, was on the appropriations committee. Now as desert community populations are growing there is a need for clinics further east.
 
 
-# Veteran Population and Needs in Riverside County
+# Veteran Population in Southern California
+
+## Demographics
 
 This data is the US census data from 2015 to 2017 showing current breakdown of Veteran Population in Riverside County. We have a total of 140,000 veterans making up about 8% of the population. Curretnly there is no VA clinic in Riverside and the nearest one in Corona is about a two hour bus ride.
 
@@ -164,8 +175,16 @@ p4b
 
 ## Mental Health in Riverside CA
   I'd like to include some data on veteran mental health health here. it would demonstrate the need for a loca facility but also help define what might be key roles for a new clinic. 
+  
+## War Participation
+
+## Income
 
 # VA Accessiblity 
+
+## Hours
+
+## Bus Route/Times
 
 Transportation/drive times
 
@@ -210,17 +229,30 @@ table
 --A trend that it may be increasing. Show a figure of vet population over time. 
 
 # VA Capacity
-
 Capacity -  VA health care locations compared to demographics, kinds of care/specialties
-  outpaitent services
-  number of patients
-  Mental Health
-  Community based clinics are based on Health Centers
-  Trajectory of capacity
-  Ecancer
-  telemedicine
+  * outpaitent services
+  * number of patients
+  * Mental Health
+  * Community based clinics are based on Health Centers
+  * Trajectory of capacity
+  * Ecancer
+  * telemedicine
+  
+  
+## Patient to Area Ratios
+
+## Trends over time 
+
   
 # VA Clinic Quality
+
+## Services Provide
+
+## Services Not Offered?
+
+## Waitimes
+
+## Ratings
 
 This is VA data for VA clinics in California
 ```{r echo=FALSE, fig.cap="Veterans Populations and Medical Center Ratings", out.width = '100%'}
@@ -306,15 +338,36 @@ Codes %>%
 
 
 
-# Conclusion:
+# Conclusion
 Students here for UCR for veterans. Major bus route, 91, 215.
 
 
 Ideal outcome: Winning contract for 5 CBOCs, over building one here. RFP
 Hybrid, community owned, Va owned. CBOCs are lucrative
 
+
+# Sources
+Denkmann, Libby. n.d. “Everything You Need To Know About The Massive, Decaying West LA VA Campus — And The Plan To Fix It.” LAist. Accessed August 20, 2019. https://laist.com/2018/07/10/everything_you_need_to_know_about_the_massive_decaying_west_la_va_campus_--_and_the_plan_to_fix_it.php.
+
+Office of Policy, and Planning. n.d. “National Center for Veterans Analysis and Statistics.” Accessed August 20, 2019. https://www.va.gov/vetdata/.
+
+Radio, Southern California Public. 2018a. “The VA Wants to Move a PTSD Clinic. The Vets Are Fighting Back.” Southern California Public Radio. April 26, 2018. https://www.scpr.org/news/2018/04/26/82584/the-va-plans-to-move-a-ptsd-clinic-in-west-la-thes/.
+
+———. 2018b. “LA’s Veteran Homelessness down 18 Percent.” Southern California Public Radio. May 31, 2018. https://www.scpr.org/news/2018/05/31/83625/veteran-homelessness-in-la-has-dropped-by-18-perce/.
+
+“Report Card - Vets Advocacy.” n.d. Vets Advocacy. Accessed August 20, 2019. https://www.vatherightway.org/report-card/.
+
+U.S. Census Bureau. 2010. “American FactFinder,” October. https://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml.
+
+“VA Facility in West Los Angeles Abandons Homeless Veterans - Lawsuit Challenges VA’s Misuse of Land Given to House Injured Vets.” 2011. ACLU of Southern California. June 8, 2011. https://www.aclusocal.org/en/press-releases/va-facility-west-los-angeles-abandons-homeless-veterans-lawsuit-challenges-vas-misuse.
+
+VA Greater Los Angeles Healthcare System, U.S. Department of Veterans Affairs. n.d. “Master Plan to Revitalize West LA Campus - VA Greater Los Angeles Healthcare System.” Accessed August 20, 2019. https://www.losangeles.va.gov/masterplan/.
+
+
 # To Do:
 Learn more about Arcadia location that just opened- Nepalitono, june, shift, their case for clinic - provides access to those without a car. 
 
 Email Ignacio about getting VA rank and branch info for va clinics so we can look at the needs of each branch and what will be needed here as far as services go. 
+
+Get bus route data from Lorelle, 9517877141
 

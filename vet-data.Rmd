@@ -1,19 +1,19 @@
 ---
 title: "Report on Capacity, Quality, Accessibility of Veteran Affairs Clinics in Southern California"
-subtitlet: "For Office of Congressman Mark Takano"
-author:
-  name: Derreck Carter-House
-  affiliation: Science to Policy at the University of California, Riverside
+subtitle: "For Office of Congressman Mark Takano"
+author: "Derreck Carter-House, Science to Policy at the University of California, Riverside"
 date: "`r format(Sys.time(), '%d %B %Y')`"
-tags: [nothing, nothingness]
 abstract: |
   This report briefly describes Veterans and thier needs in Southern Californai and how they differe from the greater united states. To analyze these questions the report utilizes many sources of data from the US Census Buerea, Veteran Affairs data, map data, and transit data. 
 
   In general this report finds that despite having the largest Veteran Population of any state it does not have A.) High Quality VA Clinics and Medical Centers and B.) Clinics that are accessilbe by much of the population. 
+  
 output: 
   pdf_document:
     toc: true
 ---
+
+
 
 ```{r echo=FALSE}
 #install.packages("readxl")
@@ -23,30 +23,11 @@ output:
 #install.packages("gghighlight")
 #tinytex::install_tinytex()
 ```
+\pagebreak
 # Southern California Veteran Overview
 
 Much of Southern California is desert and as such has very dispersed veteran populations. In addition there are different branches due to other geographic features such as coastal access for the Navy, air force bases, training bases. Many people (approxamately 2.6 million in the last 10 years) are moving into California including veterans [Source: World population]
 
-```{r pressure, echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '50%', fig.cap="A.) This figure shows veterans populations in california are the highest"}
-knitr::include_graphics("Veteran Population.png")
-
-#change district border and Clinic Color
-```
-
-```{r echo=FALSE, out.width = '50%', fig.cap="B.) Blobs dot denoting locations within reach of VA Clinics show that there is a lack of clinics in high population areas like california"}
-
-knitr::include_graphics("Veteran Clinics.png")
-
-#change district border and Clinic Color
-```
-
-
-
-```{r echo=FALSE, out.width = '100%', fig.cap="Southern California has  a high population of Veterans"}
-knitr::include_graphics("Counties.png")
-
-#change district border and Clinic Color
-```
 
 # History
 
@@ -57,10 +38,59 @@ In the 1970's the current VA's were established around Riverside. Jerry Lewis, R
 
 # Veteran Population in Southern California
 
+Analyzed districts include 36, 42, 41, 31, 35, 8, 27, 45, and 39 chosen based on a 10 mile distance of the perimeter of District 41.  
+
 ## Demographics
 
 This data is the US census data from 2015 to 2017 showing current breakdown of Veteran Population in Riverside County. We have a total of 140,000 veterans making up about 8% of the population. Curretnly there is no VA clinic in Riverside and the nearest one in Corona is about a two hour bus ride.
 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(ggplot2)
+library(reshape2)
+demo <- read_excel("Data.xlsx", sheet = "Vet_Census_Demo")
+demo.m <- melt(demo, id = c("Race",	"District",	"Veteran Total",	"Veteran Total Error"))
+demo.m$District <- as.character(demo.m$District)
+
+demo.m
+
+demo.plot <- ggplot(demo.m, aes(x=District, y=Race, size="Veteran Total", fill="Race")) + geom_jitter(aes(size = demo.m$`Veteran Total`, colour = demo.m$Race, alpha=.02)) + scale_size(range = c(0,5)) +
+    theme_bw()
+
+demo.plot
+
+pdf("Demo.pdf", width = 10, height = 4)
+  demo.plot
+dev.off
+
+```
+
+```{r figs, echo=FALSE, fig.width=4,fig.height=4,fig.cap="this figure shows the population of Veterans in Riverside county over the course of three years, although we see a decrease year after years, homeless veteran populations are increasing"}
+demo.plot
+```
+
+
+
+```{r echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '50%', fig.cap="A.) This figure shows veterans populations in california are the highest"}
+knitr::include_graphics("Veteran Population.png")
+
+#change district border and Clinic Color
+```
+
+
+```{r echo=FALSE, out.width = '50%', fig.cap="B.) Blobs dot denoting locations within reach of VA Clinics show that there is a lack of clinics in high population areas like california"}
+
+knitr::include_graphics("Veteran Clinics.png")
+
+#change district border and Clinic Color
+```
+
+
+```{r echo=FALSE, out.width = '50%', fig.cap="Southern California has a high population of Veterans"}
+knitr::include_graphics("Counties.png")
+
+#change district border and Clinic Color
+```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
@@ -79,7 +109,7 @@ colnames(VetOver) <- c("Gender", "Year", "Population", "SE")
 VetPop.plot <- ggplot(data=VetOver, aes(x=VetOver$Year, y=VetOver$Population, fill=Gender)) + ylab("Number of Veterans") + xlab("") + geom_bar(stat="identity") + labs(title="Riverside County Veteran Population") + geom_errorbar(aes(ymin=Population-SE, ymax=Population+SE), width=.1) +ylim(0, 150000)
 
 
-#Increasing homeless counts
+#Increasing homeless counts over time
 
 ```
 
@@ -230,13 +260,13 @@ table
 
 # VA Capacity
 Capacity -  VA health care locations compared to demographics, kinds of care/specialties
-  * outpaitent services
+  * outpatient services
   * number of patients
   * Mental Health
   * Community based clinics are based on Health Centers
   * Trajectory of capacity
-  * Ecancer
-  * telemedicine
+  * E cancer
+  * tele-medicine
   
   
 ## Patient to Area Ratios
@@ -250,7 +280,7 @@ Capacity -  VA health care locations compared to demographics, kinds of care/spe
 
 ## Services Not Offered?
 
-## Waitimes
+## Wait times
 
 ## Ratings
 
@@ -290,7 +320,7 @@ data.long <- melt(data, id = c("Location", "Patients", "Space"))
 p6 <- ggplot(data.long, aes(Location, Patients, fill=Space)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90))
 
 
-pdf("Loma_linda_Rating.pdf")
+pdf("Loma_Linda_Rating.pdf")
 p6
 dev.off()
 
@@ -315,7 +345,7 @@ p7 <- ggplot(data.long, aes(Facility, value, color=variable)) + geom_point(stat=
 
 
 
-pdf("Loma_linda_Rating.pdf")
+pdf("Loma_Linda_Rating.pdf")
 p7
 dev.off()
 ```

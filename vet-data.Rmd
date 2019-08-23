@@ -4,9 +4,7 @@ subtitle: "For Office of Congressman Mark Takano"
 author: "Derreck Carter-House, Science to Policy at the University of California, Riverside"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 abstract: |
-  This report briefly describes Veterans and thier needs in Southern Californai and how they differe from the greater united states. To analyze these questions the report utilizes many sources of data from the US Census Buerea, Veteran Affairs data, map data, and transit data. 
-
-  In general this report finds that despite having the largest Veteran Population of any state it does not have A.) High Quality VA Clinics and Medical Centers and B.) Clinics that are accessilbe by much of the population. 
+  This report briefly describes Veterans and thier needs in Southern California and how they differ from the greater united states. To analyze these questions the report utilizes many sources of data from the US Census Buerea, Veteran Affairs data, map data, and transit data from the following districts: 36, 42, 41, 31, 35, 8, 27, 45, and 39. In this over ten million hectare area (1/4 the size of california) there are approximately  280,000 veterans with ten clinics. In general this report finds that despite having the largest Veteran population of any state it does not have A.) High Quality VA Clinics and Medical Centers and B.) Clinics that are accessilbe by much of the population. 
   
 output: 
   pdf_document:
@@ -26,8 +24,13 @@ output:
 \pagebreak
 # Southern California Veteran Overview
 
-Much of Southern California is desert and as such has very dispersed veteran populations. In addition there are different branches due to other geographic features such as coastal access for the Navy, air force bases, training bases. Many people (approxamately 2.6 million in the last 10 years) are moving into California including veterans [Source: World population]
+Much of Southern California is desert and as such has very dispersed veteran populations (figure 1). In addition there are different branches due to other geographic features such as coastal access for the Navy, air force bases, training bases. Many people (approxamately 2.6 million in the last 10 years) are moving into California including veterans [Source: World population]
 
+```{r echo=FALSE, out.width = '50%', fig.cap="A.) This figure shows veterans populations in district 41 and the surrounding districts"}
+knitr::include_graphics("Districts_nolegend.png")
+
+#change district border and Clinic Color
+```
 
 # History
 
@@ -44,7 +47,7 @@ Analyzed districts include 36, 42, 41, 31, 35, 8, 27, 45, and 39 chosen based on
 
 This data is the US census data from 2015 to 2017 showing current breakdown of Veteran Population in Riverside County. We have a total of 140,000 veterans making up about 8% of the population. Curretnly there is no VA clinic in Riverside and the nearest one in Corona is about a two hour bus ride.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 library(readxl)
 library(ggplot2)
 library(reshape2)
@@ -52,27 +55,28 @@ demo <- read_excel("Data.xlsx", sheet = "Vet_Census_Demo")
 demo.m <- melt(demo, id = c("Race",	"District",	"Veteran Total",	"Veteran Total Error"))
 demo.m$District <- as.character(demo.m$District)
 
-demo.m
+#demo.plot <- ggplot(demo.m, aes(x=District, y=Race, size="Veteran Total", fill="District")) + geom_jitter(aes(size = demo.m$`Veteran Total`, colour = demo.m$District), alpha=.5) + scale_size(range = c(0,5)) + theme_bw()
 
-demo.plot <- ggplot(demo.m, aes(x=District, y=Race, size="Veteran Total", fill="Race")) + geom_jitter(aes(size = demo.m$`Veteran Total`, colour = demo.m$Race, alpha=.02)) + scale_size(range = c(0,5)) +
-    theme_bw()
+      
+Race.ordered <- factor(demo.m$Race, levels = rev(levels(factor(demo$Race))))
 
-demo.plot
+demo.plot <- ggplot(demo.m, aes(x=District, y = Race.ordered, size="Veteran Total")) + geom_point(aes(size = demo.m$`Veteran Total`, colour = demo.m$District), alpha=.5) + scale_size(range = c(0,5)) + theme_bw() + scale_size_continuous() + guides(color=guide_legend("Congressional District"), fill = c(demo.m$District)) + theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank())
 
-pdf("Demo.pdf", width = 10, height = 4)
+
+pdf("Demo.pdf", width = 7, height = 4)
   demo.plot
 dev.off
 
 ```
 
-```{r figs, echo=FALSE, fig.width=4,fig.height=4,fig.cap="this figure shows the population of Veterans in Riverside county over the course of three years, although we see a decrease year after years, homeless veteran populations are increasing"}
+```{r echo=FALSE, fig.width=7,fig.height=4,fig.cap="this figure shows the population of Veterans in District 41 and surrounding districts"}
 demo.plot
 ```
 
 
 
-```{r echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '50%', fig.cap="A.) This figure shows veterans populations in california are the highest"}
-knitr::include_graphics("Veteran Population.png")
+```{r echo=FALSE, fig.cap="Veterans in Riverside County", out.width = '50%', fig.cap="A.) This figure shows veterans populations in california are some of the highest in the nation"}
+knitr::include_graphics("Veteran Population_US.png")
 
 #change district border and Clinic Color
 ```
@@ -80,24 +84,47 @@ knitr::include_graphics("Veteran Population.png")
 
 ```{r echo=FALSE, out.width = '50%', fig.cap="B.) Blobs dot denoting locations within reach of VA Clinics show that there is a lack of clinics in high population areas like california"}
 
-knitr::include_graphics("Veteran Clinics.png")
+knitr::include_graphics("Veteran Clinics_US.png")
 
 #change district border and Clinic Color
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+library(readxl)
+library(ggplot2)
+library(reshape2)
+Vets <- read_excel("Data.xlsx", sheet = "B21002", range= "A2:C11")
+
+Vets$District <- as.character(Vets$District)
+
+Vet.plot <- ggplot(Vets, aes(x=Vets$District, y=Vets$`Total Vets`, fill=c(Vets$District))) + geom_bar(stat="identity") + geom_errorbar(aes(ymin = (Vets$`Total Vets`-Vets$SE), ymax = (Vets$`Total Vets`+Vets$SE)), width = 0.2) + theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank()) + guides(fill=guide_legend(title="Congressional District")) + ylab("Total Number of Veterans")
+      
+
+pdf("Vet_District_population.pdf", width = 7, height = 4)
+  Vet.plot
+dev.off
+
+```
+
+
+```{r echo=FALSE, fig.width=7,fig.height=4,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
+Vet.plot
 ```
 
 
 ```{r echo=FALSE, out.width = '50%', fig.cap="Southern California has a high population of Veterans"}
-knitr::include_graphics("Counties.png")
+knitr::include_graphics("District_populations.png")
 
 #change district border and Clinic Color
 ```
+
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(readxl)
 library(kableExtra)
 library(ggplot2)
-VetOver <- read_excel("Data.xlsx", sheet = "Vet_census", 
-    range = "A1:E7")
+VetOver <- read_excel("Data.xlsx", sheet = "Vet_census_age", range = "A1:D7")
 VetOver <- as.data.frame(VetOver)
 
 VetOver %>%
@@ -106,8 +133,7 @@ VetOver %>%
 
 colnames(VetOver) <- c("Gender", "Year", "Population", "SE")
 
-VetPop.plot <- ggplot(data=VetOver, aes(x=VetOver$Year, y=VetOver$Population, fill=Gender)) + ylab("Number of Veterans") + xlab("") + geom_bar(stat="identity") + labs(title="Riverside County Veteran Population") + geom_errorbar(aes(ymin=Population-SE, ymax=Population+SE), width=.1) +ylim(0, 150000)
-
+VetPop.plot <- ggplot(data=VetOver, aes(x=VetOver$Year, y=VetOver$Population, fill=Gender)) + ylab("Number of Veterans") + xlab("") + geom_bar(stat="identity") + labs(title="Riverside County Veteran Population") #+ geom_errorbar(aes(ymin=Population-SE, ymax=Population+SE), width=.1) + ylim(0, 150000)
 
 #Increasing homeless counts over time
 
@@ -117,7 +143,7 @@ VetPop.plot <- ggplot(data=VetOver, aes(x=VetOver$Year, y=VetOver$Population, fi
 VetPop.plot
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, include=FALSE}
 library(readxl)
 library(kableExtra)
 library(ggplot2)
@@ -128,7 +154,7 @@ library(gghighlight)
 income <- read_excel("Data.xlsx", sheet = "B21007")
 income <- as.data.frame(income)
 
-income.m <- melt(income, id = c("Age", "Disability", "Location", "Population", "Error"))
+income.m <- melt(income, id = c("Age", "Disability", "District", "Population", "Error"))
 
 
 dodge=position_dodge(width=0)
@@ -149,8 +175,9 @@ dodge=position_dodge(width=0)
 str(income.m$Age)
 income.old <- income.m[income.m$Age == "65+ years" ,]
 
-p3 <- ggplot(income.old, aes(x=Location, y=income.old$`Population`)) +
-  geom_bar(stat= "identity", fill="mediumorchid1") + ylab("Individuals") + coord_flip() + ggtitle("Senior Veterans Below Poverty Line")
+p3 <- ggplot(income.old, aes(x=District, y=income.old$`Population`)) +
+  geom_bar(aes(fill=income.old$Disability), stat= "identity") + ylab("Number of Veterans") + ggtitle("Senior Veterans Below Poverty Line") + guides(fill=guide_legend(title=""))
+
 
 #str(income.m$Location)
 #income.here <- income.m[income.m$Location == "Congressional District 41" ,]
@@ -171,7 +198,9 @@ dev.off()
 
 ```
 
-Of the 140,000 Veterans in Riverside county thousands live below the poverty line (See districts 42 and 41). Meaning they may rely on public transporation to get them to VA clinics. 
+## Income
+
+In district 41 and surrounding districts thousands live below the poverty line, and as a result Meaning they may rely on public transporation to get them to VA clinics. 
 
 ```{r echo=FALSE, fig.width=4,fig.height=4,fig.cap="This figure shows senior veterans (65+ years old) living below the poverty line in California Congressional Districts"}
 p3
@@ -179,36 +208,39 @@ p3
 
 Here is a specific break down of veterans with disablities that might inhibit them from being able to drive a car. 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 library(readxl)
 library(ggplot2)
 library(reshape2)
 
-dis <- read_excel("Data.xlsx", sheet = "B21100", range = "A1:E7")
+dis <- read_excel("Data.xlsx", sheet = "B21100")
 dis.df <- as.data.frame(dis)
 
-dis.m <- melt(dis.df, id = c("Service-connected Disability Rating", 'Riverside County',	'Riverside SE',	'District 41',	'District 41 SE'))
+dis.m <- melt(dis.df, id = c("Variable",	"Percent Disability",	"District",	"Population"))
 
-p4a <- ggplot(dis.m, aes(x=dis.m$`Service-connected Disability Rating`, y= dis.m$`Riverside County`, fill=dis.m$`Service-connected Disability Rating`)) + geom_bar(stat="identity", position = position_dodge()) + ylab("Individuals")  + ggtitle("Disablable Veteran Population in Riverside County") + theme(axis.text.x = element_text(angle = 90, vjust=.2)) + geom_errorbar(aes(ymin=dis.m$`Riverside County`-dis.m$`Riverside SE`, ymax=dis.m$`Riverside County`+dis.m$`Riverside SE`), width=.2, position=position_dodge(.9))
+dis.plot <- ggplot() + geom_bar(aes(y = dis.df$Population, x = dis.df$`Percent Disability`, fill = dis.df$District), stat="identity") + guides(fill=guide_legend(title="Congressional District")) + ylab("Population") + xlab("Percent Service Connected Disability ")
 
-p4b <- ggplot(dis.m, aes(x=dis.m$`Service-connected Disability Rating`, y= dis.m$`District 41`, fill=dis.m$`Service-connected Disability Rating`)) + geom_bar(stat="identity", position = position_dodge()) + ylab("Individuals")  + ggtitle("Disablable Veteran Population in District 41") + theme(axis.text.x = element_text(angle = 90, vjust=.2)) + geom_errorbar(aes(ymin=dis.m$`District 41`-dis.m$`District 41 SE`, ymax=dis.m$`District 41`+dis.m$`District 41 SE`), width=.2, position=position_dodge(.9))
+pdf("displot.pdf", height=4, width=10)
+dis.plot
+dev.off()
+
 
 ```
+
 Riverside has nearly 100
-```{r echo=FALSE, fig.width=8,fig.height=6,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
-p4a
+
+
+```{r echo=FALSE, fig.width=8,fig.height=6,fig.cap="This figure shows veterans with disablilities"}
+dis.plot
 ```
 
-```{r echo=FALSE, fig.width=8,fig.height=6,fig.cap="This figure shows veterans with and without disablilities living below the poverty line in California Congressional District 41"}
-p4b
-```
 
 ## Mental Health in Riverside CA
   I'd like to include some data on veteran mental health health here. it would demonstrate the need for a loca facility but also help define what might be key roles for a new clinic. 
   
 ## War Participation
 
-## Income
+
 
 # VA Accessiblity 
 
@@ -223,7 +255,7 @@ knitr::include_graphics("Poverty_vet.png")
 ```
 
 ```{r echo=FALSE, fig.cap="Drive times to Clinics in Southern California", out.width = '100%'}
-knitr::include_graphics("drive time.png")
+knitr::include_graphics("Districts_Drive_time.png")
 
 
 ```
@@ -252,7 +284,7 @@ table = income %>%
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-table
+#table
 ```
 
 
@@ -309,7 +341,7 @@ p5
 ```
 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, include=FALSE}
 library(readxl)
 library(ggplot2)
 library(reshape2)
@@ -333,7 +365,7 @@ p6
 
 This VA data focuses on quality rating of Medical Centers in California. 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, include=FALSE}
 library(readxl)
 library(ggplot2)
 library(reshape2)

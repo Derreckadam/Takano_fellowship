@@ -4,7 +4,7 @@ subtitle: "For Office of Congressman Mark Takano"
 author: "Derreck Carter-House, Science to Policy at the University of California, Riverside"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 abstract: |
-  This report briefly describes Veterans and thier needs in Southern California and how they differ from the greater united states. To analyze these questions the report utilizes many sources of data from the US Census Buerea, Veteran Affairs data, map data, and transit data from the following districts: 36, 42, 41, 31, 35, 8, 27, 45, and 39. In this over ten million hectare area (1/4 the size of california) there are approximately  280,000 veterans with ten clinics. In general this report finds that despite having the largest Veteran population of any state it does not have A.) High Quality VA Clinics and Medical Centers and B.) Clinics that are accessilbe by much of the population. 
+  This report describes Veterans and thier needs in Southern California and how they differ from the greater united states. To analyze these questions the report utilizes many sources of data from the US Census Buerea, Veteran Affairs data, map data, and transit data from the following districts: 36, 42, 41, 31, 35, 8, 27, 45, and 39. In this over ten million hectare area (1/4 the size of california) there are approximately  280,000 veterans with ten clinics. In general this report finds that despite having the largest Veteran population of any state it does not have A.) High Quality VA Clinics and Medical Centers and B.) Clinics that are accessilbe by much of the population. 
   
 output: 
   pdf_document:
@@ -26,6 +26,8 @@ library(reshape2)
 library(knitr)
 library(kableExtra)
 ```
+Summary: with figure for socal districts
+
 \pagebreak
 
 
@@ -76,7 +78,7 @@ Analyzed districts include 36, 42, 41, 31, 35, 8, 27, 45, and 39 chosen based on
 
 This analysis assigned census tracks (neighborhoods) a value of veterans and then output a circle corresponding to the number of veterans in that area. 
 
-![District Populations](./images/population/District_populations.png){width=80%}!   [District Populations legend](./images/population/Districts_legend.png){height=25%}
+![District Populations](./images/population/District_populations.png){width=70%} ![District Populations legend](./images/population/Districts_legend.png){height=25%}
 
 \pagebreak
 
@@ -99,6 +101,7 @@ This data is the US census data from 2013 to 2017 showing current breakdown of V
 ### Race
 
 This heatmap shows various races claimed by veterans in census data, this data is overlayed onto District data. Composition of each district can be analyzed based on heat (red is high populations yellow is low)
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 
 demo <- read_excel("Data.xlsx", sheet = "Vet_Census_Demo")
@@ -166,7 +169,7 @@ str(income.m$Age)
 income.old <- income.m[income.m$Age == "65+ years" ,]
 
 p2 <- ggplot(income.old, aes(x=District, y=income.old$`Population`, fill=income.old$District)) +
-  geom_bar(stat= "identity") + ylab("Number of Veterans") + ggtitle("Senior Veterans Below Poverty Line") + guides(fill=guide_legend(title=""))
+  geom_bar(stat= "identity") + ylab("Number of Veterans") + ggtitle("Senior Veterans Below Poverty Line") + theme(legend.position = "none")
 
 
 
@@ -223,35 +226,24 @@ This figure uses Census data and reports veterans 65 year and older.
 ```{r echo=FALSE, message=FALSE, include=FALSE}
 
 
-income <- read_excel("Data.xlsx", sheet = "B21007")
-income <- as.data.frame(income)
+age <- read_excel("Data.xlsx", sheet = "Seniors", range = "A1:C10")
+age <- as.data.frame(age)
 
-income.m <- melt(income, id = c("Age", "Disability", "District", "Population", "Margin of Error"))
-
-# subset data and create new object based on column query
-str(income.m$Disability)
-income.dis <- income.m[income.m$Disability == "With a disability" ,]
-
-dodge=position_dodge(width=.99)
-p1 <- ggplot(income.dis, aes(x=District, y=income.dis$`Population`, fill=Age)) +
-  geom_bar(stat="identity", alpha=0.9, position=dodge) + ylab("Number of Disabled Veterans") + geom_errorbar(position=dodge, aes(ymin=Population-income.dis$`Margin of Error`, ymax=Population+income.dis$`Margin of Error`), width=.1)
+age.plot <- ggplot(age, aes(x=age$District, y=age$`Total Seniors`, fill=age$District)) +
+  geom_bar(stat="identity") + ylab("Number of Veterans over 65") + xlab("Congressional District") + geom_errorbar(aes(ymin=age$`Total Seniors`-age$Error, ymax=age$`Total Seniors`+age$Error), width=.1) + theme(legend.position = "none")
 
 
-str(income.m$Age)
-income.old <- income.m[income.m$Age == "65+ years" ,]
-
-p2 <- ggplot(income.old, aes(x=District, y=income.old$`Population`, fill=income.old$District)) +
-  geom_bar(stat= "identity") + ylab("Number of Veterans") + ggtitle("Senior Veterans Below Poverty Line") + theme(legend.position="none")
-
-
-pdf("demos.pdf")
-# set plot so it is 2x2 in one plot canvas
-par(mfrow=c(1,1)) 
-p1
-p2
+pdf("age.pdf")
+age.plot
 dev.off()
 
 ```
+
+
+```{r echo=FALSE, fig.width=8,fig.height=4,fig.cap="This figure shows senior veterans (65+ years old) living below the poverty line", fig.pos = "H"}
+age.plot
+```
+
 
 This is a break down of the senior veterans that live below the poverty level in each district 
 
@@ -328,7 +320,7 @@ table = income %>%
 
 ## Patient to Area Ratios
 
-```{r, echo=FALSE, message=FALSE, include=FALSE}
+#```{r echo=FALSE, message=FALSE, include=FALSE}
 library(readxl)
 library(ggplot2)
 library(reshape2)
@@ -336,8 +328,7 @@ data <- read_excel("Data.xlsx", sheet = "VA sqft v Patients", range = "A1:C6")
 
 data.long <- melt(data, id = c("Location", "Patients", "Space"))
 
-p6 <- ggplot(data.long, aes(Location, Patients, fill=Space)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90))
-
+p6 <- ggplot(data.long, aes(Space, Patients)) + geom_point(aes(color=factor(data.long$Location)), size = 5) + labs(color = "Facility") + theme(legend.title = element_text("Facility")) + scale_size_area(max_size = 6) 
 
 pdf("Loma_Linda_Rating.pdf")
 p6
@@ -346,7 +337,7 @@ dev.off()
 #Include age over time of each of these facilites. 
 ```
 
-```{r echo=FALSE, fig.width=8,fig.height=4,fig.cap="Loma Linda facilities capacity/size", fig.pos = "H"}
+#```{r echo=FALSE, fig.width=8,fig.height=4,fig.cap="Loma Linda facilities capacity/size", fig.pos = "H"}
 p6
 ```
 \pagebreak
@@ -364,14 +355,13 @@ library(readxl)
 library(kableExtra)
 library(ggplot2)
 
-Wait <- read_excel("Data.xlsx", sheet = "VA_waittimes")
-Wait <- as.data.frame(Wait[,3:18])
-#Wait%>%
-  #kable() %>%
-  #kable_styling(bootstrap_options = c("striped", "hover"))
+Wait <- read_excel("Data.xlsx", sheet = "VA_waittimes", range = "A40:D1443")
 
-p5 <- ggplot(data=Wait, aes(x=Wait$Location, y=Wait$`PC Avg Wait Time in Days 13`, fill=Wait$Location)) + geom_bar(stat="identity") + theme(legend.position = "none", axis.text.x = element_text(angle = 90)) + ylab("Primary Care Wait time (days)") + xlab("")
 
+p5 <- ggplot(data=Wait, aes(x=Wait$`PC Avg Wait Time (Days)`, y=Wait$`Completed within 30 Days 2`, fill=Wait$`PC Avg Wait Time in Days 13`, color=Wait$`PC Avg Wait Time (Days)`), label=Wait$`Completed Appointment Wait Times National,`) + geom_point(alpha=0.2, size=2) + xlab("Wait time for Primary Care (Days)") + ylab("Completed Appointments") + labs(fill="Wait time (Days)") + scale_color_continuous(low = "green", high = "red", name="Number of Veterans") + geom_text(aes(label=ifelse((Wait$`Completed within 30 Days 2` > 75000 & Wait$`PC Avg Wait Time (Days)` < 5), as.character(Wait$`Completed Appointment Wait Times National,`), " ")), position=position_jitter(width=.1,height=11))
+
+
+p5
 ```
 
 
@@ -392,12 +382,12 @@ library(ggplot2)
 library(reshape2)
 data <- read_excel("Data.xlsx", sheet = "LomaLinda_rating_va", range = "A1:W9")
 
-data.long <- melt(data, id = "Facility", measure = c("F1",	"F2",	"F3",	"F4",	"F5",	"F6",	"F7",	"F8",	"F9",	"F10",	"F11",	"F12",	"F13",	"F14",	"F15",	"F16",	"F17",	"F18",	"F19",	"F20",	"F21",	"F22"))
+data.long <- melt(data, id = "Facility")
+data.long
+p7 <- ggplot(data.long, aes(Facility, variable)) + geom_tile(aes(fill=data.long$value)) + theme(axis.text.x = element_text(angle = 90)) + scale_fill_gradient(low = "red", high = "green", name="Percent Quality Rating") + ylab("Procedure Code")
 
-p7 <- ggplot(data.long, aes(Facility, value, color=variable)) + geom_point(stat='identity') + theme(axis.text.x = element_text(angle = 90))
 
-
-
+p7
 pdf("Loma_Linda_Rating.pdf")
 p7
 dev.off()

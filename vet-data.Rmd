@@ -4,7 +4,7 @@ subtitle: "For Office of Congressman Mark Takano"
 author: "Derreck Carter-House, Science to Policy at the University of California, Riverside"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 abstract: |
-  This report describes Veterans and thier needs in Southern California and how they differ from the greater united states. To analyze these questions the report utilizes many sources of data from the US Census Buerea, Veteran Affairs data, map data, and transit data from the following districts: 36, 42, 41, 31, 35, 8, 27, 45, and 39. In this over ten million hectare area (1/4 the size of california) there are approximately  280,000 veterans with ten clinics. In general this report finds that despite having the largest Veteran population of any state it does not have A.) High Quality VA Clinics and Medical Centers and B.) Clinics that are accessilbe by much of the population. 
+  This report describes Veterans and their needs in Southern California and how they differ from the greater United States. To analyze these questions the report utilizes many sources of data from the US Census Bureau, Veteran Affairs data, map data, and transit data from the following Congressional districts: 36, 42, 41, 31, 35, 8, 27, 45, and 39. In this over ten million hectare area (Southern 1/4 of California) from the Inland Empire to the Nevada border there are approximately  280,000 veterans with ten clinics. In general, this report finds that despite having the largest veteran population of any state it does not have A.) High Quality VA Clinics and Medical Centers and B.) Clinics that are accessible by much of the population.  
   
 output: 
   pdf_document:
@@ -27,6 +27,7 @@ library(knitr)
 library(kableExtra)
 ```
 Summary: with figure for socal districts
+![District Populations](./images/Districts.png)![District Populations](./images/Districts_legend.png)
 
 \pagebreak
 
@@ -35,39 +36,31 @@ Summary: with figure for socal districts
 
 
 
-A.) This figure shows veterans populations in california are some of the highest in the nation
+A.) This figure shows veterans populations in the US with Veterans Medical Centers and their ratings.
 
 
-![US Populations](./images/Veteran Population_US.png){width=80%}
+![US Populations](./images/Veteran Population_US.png){width=80%} ![Clinics](./images/Veteran Population_US_legend.png){width=20%}
 
-\pagebreak
-
-
-
-B.) Blobs dot denoting locations within reach of VA Clinics show that there is a lack of clinics in high population areas like california
-
-
-![Clinics](./images/Veteran Clinics_US.png){width=80%}
 
 
 \pagebreak
 
 
-C.) Additionally VA data shows that clinics quantity and quality decreases in the western united states
-
-
-![Quality vs Population](./images/Quality vs State Population_US.png){width=80%}  ![Quality legend](./images/Quality vs State Population_US_legend.png){width=30%}
 
 \pagebreak
 
 
 # Southern California Veteran Overview
 
-Much of Southern California is desert and as such has very dispersed veteran populations (figure 1). In addition there are different branches due to other geographic features such as coastal access for the Navy, air force bases, training bases. Many people (approxamately 2.6 million in the last 10 years) are moving into California including veterans [Source: World population]
+Much of Southern California has dispersed veteran populations (figure 1). In addition there are different branches due to other geographic features such as coastal access for the Navy, air force bases, training bases. Many people (approximately 2.6 million in the last 10 years) are moving into California including veterans [Source: World population]
 
 ## History
 
-In 1888 the LA West Campus was gifted to the Federal Government. It was under scruteny for corruption and mismangement with lead to the creation of the "Master Plan" [Everything You Need To Know About The Massive, Decaying West LA VA Campus — And The Plan To Fix It.] bringing in more housing for Veterans and reducing the Veteran Homeless Population in LA [LA’s Veteran Homelessness down 18 Percent]. The plan also revitalizes the medical facilities however cuts the PTSD clinic [The VA Wants to Move a PTSD Clinic. The Vets Are Fighting Back].
+Evolution: Medical center > Clinics > touch points
+
+Legislation for establishing, health care, hospitals, clinics
+
+Possibly Census data from 100 years
 
 In the 1970's the current VA's were established around Riverside. Jerry Lewis, Rep for Redlands, was on the appropriations committee. Now as desert community populations are growing there is a need for clinics further east.
 
@@ -78,17 +71,25 @@ Analyzed districts include 36, 42, 41, 31, 35, 8, 27, 45, and 39 chosen based on
 
 This analysis assigned census tracks (neighborhoods) a value of veterans and then output a circle corresponding to the number of veterans in that area. 
 
-![District Populations](./images/population/District_populations.png){width=70%} ![District Populations legend](./images/population/Districts_legend.png){height=25%}
+![District Populations](./images/population/District_populations.png){width=70%}![District Populations legend](./images/population/Districts_legend.png){height=25%}
 
 \pagebreak
 
-The next analysis used VA facilities in southern california as reference points, then using traffic data (monday 8:00) mapped out the furthest a driver could go in the given time constraints, 10min, 20min, 45min, and 1hr. The darker the area the shorter the drive to a VA clinic.
+The next analysis used VA facilities in southern california as reference points, then using traffic data (monday 8:00) mapped out the furthest a driver could go in the given time constraints, 10min, 20min, 45min, and 1hr. The darker the area the shorter the drive to a VA clinic. Additionally, topographic maps show mountain ranges seperating veterans from clinics. The location of clinics is predeteremined by the VA.
+
+Add City names, pull district numbers. 
 
 
 ![Drive times](./images/drive/drive time.png){width=80%}![Drive legend ](./images/drive/drive time legend.png){height=30%}
 \pagebreak
 
-Each veteran assessed from track data was assigned to the district in which they belong. These values were summed up and are presented as high to low values (Red to Yellow)
+Each veteran assessed from track data was assigned to the district in which they belong. These values were summed up and are presented as high to low values (Red to Yellow).  Change legend to say veterans
+
+Create a figure for Ratio of care per race, use to show distance from clinic and population (per square mile)
+
+
+Take out districts and add cities. Show the ratio of Veterans/sqmile
+
 
 ![Vet concentrations](./images/concentrations/Vet_concentration vs Clinics.png){width=85%}![Concentration legend ](./images/concentrations/Vet_concentration vs Clinics_Legend.png){height=20%}
 \pagebreak
@@ -119,6 +120,8 @@ pdf("Demo.pdf", width = 7, height = 4)
 dev.off
 
 ```
+
+3 maps White, Latino, Asian, Black
 
 ```{r echo=FALSE, fig.width=7,fig.height=4,fig.cap="this figure shows the population of Veterans in District 41 and surrounding districts",fig.pos = "H"}
 Demo.heat
@@ -202,6 +205,7 @@ dev.off()
 
 This figure shows the distribution of the 60,000 disabled vets by their percent Service connected disablity
 
+Remove Congressional District, show 70+ on map. 
 
 ```{r echo=FALSE, fig.width=8,fig.height=6,fig.cap="This figure shows veterans with disablilities",fig.pos = "H"}
 dis.plot
@@ -211,7 +215,7 @@ dis.plot
 
 This figure was analyzed using census data on veterans that indicated that their wages were below the poverty level 
 
-
+Combine ages for figure and create map of disablities, the 
 ```{r echo=FALSE, fig.width=8,fig.height=4,fig.cap="This figure shows disabled veterans living below the poverty line",fig.pos = "H"}
 p1
 ```
@@ -240,7 +244,7 @@ dev.off()
 ```
 
 
-```{r echo=FALSE, fig.width=8,fig.height=4,fig.cap="This figure shows senior veterans (65+ years old) living below the poverty line", fig.pos = "H"}
+```{r echo=FALSE, fig.width=8,fig.height=4,fig.cap="This figure shows senior veterans (65+ years old)", fig.pos = "H"}
 age.plot
 ```
 
@@ -261,6 +265,7 @@ In district 41 and surrounding districts thousands live below the poverty line, 
 This result shows employed and unemployed veterans living below the poverty level
 \pagebreak
 
+Veteran Homlessness is on the rise despite the fact that veteran populations are dropping
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 VetOver <- read_excel("Data.xlsx", sheet = "Vet_census_age", range = "A1:D7")
@@ -350,7 +355,7 @@ p6
 This is VA wait time data for each VA clinic in California
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 library(readxl)
 library(kableExtra)
 library(ggplot2)
@@ -360,8 +365,6 @@ Wait <- read_excel("Data.xlsx", sheet = "VA_waittimes", range = "A40:D1443")
 
 p5 <- ggplot(data=Wait, aes(x=Wait$`PC Avg Wait Time (Days)`, y=Wait$`Completed within 30 Days 2`, fill=Wait$`PC Avg Wait Time in Days 13`, color=Wait$`PC Avg Wait Time (Days)`), label=Wait$`Completed Appointment Wait Times National,`) + geom_point(alpha=0.2, size=2) + xlab("Wait time for Primary Care (Days)") + ylab("Completed Appointments") + labs(fill="Wait time (Days)") + scale_color_continuous(low = "green", high = "red", name="Number of Veterans") + geom_text(aes(label=ifelse((Wait$`Completed within 30 Days 2` > 75000 & Wait$`PC Avg Wait Time (Days)` < 5), as.character(Wait$`Completed Appointment Wait Times National,`), " ")), position=position_jitter(width=.1,height=11))
 
-
-p5
 ```
 
 
@@ -386,8 +389,6 @@ data.long <- melt(data, id = "Facility")
 data.long
 p7 <- ggplot(data.long, aes(Facility, variable)) + geom_tile(aes(fill=data.long$value)) + theme(axis.text.x = element_text(angle = 90)) + scale_fill_gradient(low = "red", high = "green", name="Percent Quality Rating") + ylab("Procedure Code")
 
-
-p7
 pdf("Loma_Linda_Rating.pdf")
 p7
 dev.off()
